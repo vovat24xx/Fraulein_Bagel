@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fräulein Bagel – Café in Straubing</title>
+<meta name="description" content="Fräulein Bagel in der Jakobsgasse 3, Straubing: Bagels aus eigenem Teig, Kaffee und mehr.">
+<meta name="theme-color" content="#3B2218">
+<style>
+  :root{
+    --cream:#FFF6EA; --sand:#F6E3CB; --cocoa:#3B2218; --terracotta:#A8432C;
+    --rose:#E8B4A6; --gold:#E0A44B; --radius:20px;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:70px}
+  body{margin:0;background:var(--cream);color:var(--cocoa);font-family:var(--sans);line-height:1.6;font-size:1.0625rem;
+    background-image:radial-gradient(rgba(59,34,24,.045) 1px,transparent 1px);background-size:14px 14px}
+  h1,h2,h3{font-family:var(--serif);line-height:1.12;margin:0 0 .5em}
+  a{color:var(--terracotta)}
+  :focus-visible{outline:3px solid var(--terracotta);outline-offset:3px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--cocoa);color:var(--cream);padding:.75rem 1rem;z-index:100}
+  .skip:focus{left:8px;top:8px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* Header */
+  header.top{position:sticky;top:0;background:rgba(255,246,234,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--sand);z-index:50}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+  .brand{font-family:var(--serif);font-size:1.4rem;font-weight:700;text-decoration:none;color:var(--cocoa);display:flex;align-items:center;gap:8px}
+  .brand span{color:var(--terracotta)}
+  .brand svg{width:30px;height:30px}
+  nav ul{list-style:none;display:flex;gap:20px;margin:0;padding:0;flex-wrap:wrap;align-items:center}
+  nav a{color:var(--cocoa);text-decoration:none;font-weight:600;padding:6px 2px;border-bottom:2px solid transparent}
+  nav a:hover{border-color:var(--terracotta)}
+  .badge{display:none;font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--cocoa);color:var(--cream)}
+  .badge.on{display:inline-block}
+  .badge.closed{background:var(--sand);color:var(--cocoa);border:1px solid var(--cocoa)}
+
+  /* Hero */
+  .hero{position:relative;padding:64px 0 90px;overflow:hidden}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+  .eyebrow{letter-spacing:.16em;text-transform:uppercase;font-size:.82rem;font-weight:700;color:var(--terracotta);margin:0 0 12px}
+  .hero h1{font-size:clamp(2.5rem,6.5vw,4.4rem);letter-spacing:-.01em}
+  .hero h1 em{color:var(--terracotta);font-style:italic}
+  .hero p.lead{font-size:1.2rem;max-width:36ch}
+  .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+  .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;font-weight:700;text-decoration:none;border:2px solid var(--cocoa);cursor:pointer;font:inherit;font-weight:700;letter-spacing:.01em;transition:transform .18s,box-shadow .18s,background .18s,color .18s}
+  .btn:hover{transform:translateY(-3px)}
+  .btn:active{transform:translateY(0)}
+  .btn.primary{background:linear-gradient(180deg,#52301F,var(--cocoa));color:var(--cream);box-shadow:0 10px 22px -10px rgba(59,34,24,.75),inset 0 1px 0 rgba(255,255,255,.18)}
+  .btn.primary:hover{background:linear-gradient(180deg,#C0553A,var(--terracotta));border-color:var(--terracotta);box-shadow:0 14px 26px -10px rgba(168,67,44,.7)}
+  .btn.ghost{color:var(--cocoa);background:rgba(255,255,255,.55);backdrop-filter:blur(4px)}
+  .btn.ghost:hover{background:var(--cocoa);color:var(--cream)}
+  .btn .arr{display:inline-block;transition:transform .18s}
+  .btn:hover .arr{transform:translateX(4px)}
+  .photo-frame{border-radius:200px 200px 28px 28px;overflow:hidden;box-shadow:0 30px 50px -24px rgba(59,34,24,.6);border:6px solid #fff;background:var(--sand);aspect-ratio:4/5}
+  .photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .thumb{width:64px;height:64px;border-radius:14px;object-fit:cover;flex:none;box-shadow:0 6px 14px -8px rgba(59,34,24,.6)}
+  .item .l{display:flex;gap:14px;align-items:center}
+  .scene{position:relative;justify-self:center;width:100%;max-width:420px}
+  .scene svg{width:100%;height:auto;display:block}
+  .float{animation:float 6s ease-in-out infinite}
+  .float.b{animation-delay:-3s}
+  @keyframes float{50%{transform:translateY(-10px)}}
+  .wave{position:absolute;bottom:-1px;left:0;width:100%;height:60px;display:block}
+
+  /* Marquee */
+  .marquee{background:var(--cocoa);color:var(--cream);overflow:hidden;white-space:nowrap;padding:14px 0;font-family:var(--serif);font-size:1.15rem}
+  .marquee div{display:inline-block;padding-left:100%;animation:scroll 28s linear infinite}
+  .marquee span{margin:0 22px;color:var(--gold)}
+  @keyframes scroll{to{transform:translateX(-100%)}}
+
+  section{padding:76px 0}
+  section.alt{background:var(--sand)}
+  h2{font-size:clamp(1.9rem,4vw,2.7rem)}
+  .sub{max-width:60ch;margin-bottom:28px}
+
+  /* Features */
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;margin-top:28px}
+  .feat{background:#fff;border-radius:var(--radius);padding:24px;border:1px solid rgba(59,34,24,.1);box-shadow:0 8px 24px -16px rgba(59,34,24,.35)}
+  .feat svg{width:44px;height:44px;margin-bottom:10px}
+  .feat h3{font-size:1.25rem;margin-bottom:.3em}
+  .feat p{margin:0}
+
+  /* Menu */
+  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+  .tab{padding:9px 18px;border-radius:999px;border:2px solid var(--cocoa);background:transparent;color:var(--cocoa);font:inherit;font-weight:700;cursor:pointer}
+  .tab[aria-pressed="true"]{background:var(--cocoa);color:var(--cream)}
+  .menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+  .card{background:var(--cream);border-radius:var(--radius);padding:26px;border:1px solid rgba(59,34,24,.12);box-shadow:0 10px 28px -18px rgba(59,34,24,.45)}
+  .card h3{color:var(--terracotta);font-size:1.45rem;border-bottom:2px dotted var(--rose);padding-bottom:10px;display:flex;align-items:center;gap:10px}
+  .card h3 svg{width:30px;height:30px;flex:none}
+  .item{display:flex;justify-content:space-between;gap:12px;padding:11px 0}
+  .item + .item{border-top:1px solid rgba(59,34,24,.1)}
+  .item b{display:block}
+  .item small{display:block;opacity:.85}
+  .price{font-weight:700;white-space:nowrap}
+  .note{font-size:.95rem;margin-top:24px}
+
+  /* Gallery (nur sichtbar, wenn Fotos eingetragen sind) */
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px}
+  .gallery img{width:100%;height:240px;object-fit:cover;border-radius:var(--radius)}
+
+  /* About */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .about svg{width:100%;max-width:360px;justify-self:center}
+  .quote{border-left:4px solid var(--gold);padding-left:16px;font-family:var(--serif);font-size:1.25rem;margin:22px 0 0}
+
+  /* Visit */
+  .visit{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  address{font-style:normal;font-size:1.15rem}
+  dl.hours{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 20px}
+  dl.hours dt{font-weight:700}
+  dl.hours dd{margin:0}
+  .pin{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .pin svg{width:38px;height:38px;flex:none}
+
+  footer{background:var(--cocoa);color:var(--cream);padding:40px 0 90px}
+  footer .big{font-family:var(--serif);font-size:1.6rem;margin:0 0 12px}
+  footer ul{list-style:none;padding:0;margin:0 0 16px;display:flex;gap:18px;flex-wrap:wrap}
+  footer a,footer button.linklike{color:var(--cream)}
+  button.linklike{background:none;border:0;padding:0;font:inherit;text-decoration:underline;cursor:pointer;color:var(--terracotta)}
+
+  /* Mobile bar */
+  .bar{display:none}
+  @media (max-width:760px){
+    .bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--cocoa);padding:10px;gap:10px}
+    .bar a{flex:1;text-align:center;padding:11px;border-radius:999px;font-weight:700;text-decoration:none;background:var(--cream);color:var(--cocoa)}
+    .bar a + a{background:var(--gold)}
+  }
+
+  /* Dialogs */
+  dialog{max-width:680px;width:calc(100% - 32px);border:0;border-radius:var(--radius);padding:0;background:var(--cream);color:var(--cocoa)}
+  dialog::backdrop{background:rgba(59,34,24,.6)}
+  .dlg{padding:28px;max-height:80vh;overflow:auto}
+  .dlg h2{font-size:1.6rem}
+  .dlg h3{font-size:1.1rem;margin-top:1.2em}
+  .dlg .close{float:right;margin-left:12px;padding:8px 16px}
+
+  #cookie{position:fixed;left:12px;right:12px;bottom:70px;max-width:620px;margin:0 auto;background:var(--cocoa);color:var(--cream);padding:18px;border-radius:var(--radius);z-index:80;display:none}
+  #cookie p{margin:0 0 12px}
+  #cookie button.linklike{color:var(--cream)}
+  #cookie .btn{border-color:var(--cream);background:var(--cream);color:var(--cocoa);padding:8px 18px}
+
+  /* Reveal */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .rv.in{opacity:1;transform:none}
+
+  @media (max-width:760px){
+    .hero .wrap,.about,.visit{grid-template-columns:1fr}
+    .hero{padding-top:36px}
+    .scene{max-width:300px}
+    section{padding:56px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .float,.marquee div{animation:none}
+    .marquee div{padding-left:0}
+    .rv{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Zum Inhalt springen</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#start" aria-label="Fräulein Bagel – Startseite">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#E0A44B"/><circle cx="20" cy="20" r="13" fill="#C98A33"/><circle cx="20" cy="20" r="5" fill="#FFF6EA"/></svg>
+      <span style="color:var(--cocoa)">Fräulein</span> <span>Bagel</span>
+    </a>
+    <nav aria-label="Hauptnavigation">
+      <ul>
+        <li><a href="#menu">Speisekarte</a></li>
+        <li><a href="#about">Über uns</a></li>
+        <li><a href="#besuch">Besuch</a></li>
+        <li><span id="openBadge" class="badge" role="status"></span></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="start">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Café · Jakobsgasse · Straubing</p>
+        <h1>Bagels aus <em>eigenem Teig</em>. Kaffee zum Bleiben.</h1>
+        <p class="lead">Ein kleines Café in der Straubinger Innenstadt – für Frühstück, Mittagspause oder einfach einen guten Kaffee.</p>
+        <div class="btns">
+          <a class="btn primary" href="#menu">Speisekarte ansehen <span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn ghost" href="#besuch">So findest du uns</a>
+        </div>
+      </div>
+      <div class="scene" id="heroScene">
+        <!-- Eigene Illustration: Bagel mit Schichten -->
+        <svg viewBox="0 0 420 380" role="img" aria-label="Illustration eines belegten Bagels mit Frischkäse, Gurke und Tomate">
+          <ellipse cx="210" cy="340" rx="170" ry="22" fill="#E8B4A6" opacity=".7"/>
+          <g class="float">
+            <path d="M60 190c0-80 70-130 150-130s150 50 150 130z" fill="#E0A44B"/>
+            <path d="M60 190c0-80 70-130 150-130s150 50 150 130z" fill="none" stroke="#C98A33" stroke-width="6"/>
+            <g fill="#FFF6EA">
+              <ellipse cx="130" cy="120" rx="9" ry="4.5" transform="rotate(-25 130 120)"/>
+              <ellipse cx="180" cy="95" rx="9" ry="4.5" transform="rotate(15 180 95)"/>
+              <ellipse cx="240" cy="92" rx="9" ry="4.5" transform="rotate(-10 240 92)"/>
+              <ellipse cx="290" cy="122" rx="9" ry="4.5" transform="rotate(30 290 122)"/>
+              <ellipse cx="210" cy="132" rx="9" ry="4.5" transform="rotate(5 210 132)"/>
+              <ellipse cx="155" cy="152" rx="9" ry="4.5" transform="rotate(-35 155 152)"/>
+              <ellipse cx="270" cy="156" rx="9" ry="4.5" transform="rotate(20 270 156)"/>
+            </g>
+          </g>
+          <!-- Füllung -->
+          <rect x="50" y="196" width="320" height="22" rx="11" fill="#FFF6EA" stroke="#3B2218" stroke-width="3"/>
+          <path d="M44 222c30 18 60-6 90 12s60-8 90 10 60-8 90 8 50-6 66-4v-22H44z" fill="#7BA05B" stroke="#3B2218" stroke-width="3"/>
+          <circle cx="110" cy="254" r="14" fill="#C8553D" stroke="#3B2218" stroke-width="3"/>
+          <circle cx="210" cy="260" r="14" fill="#C8553D" stroke="#3B2218" stroke-width="3"/>
+          <circle cx="310" cy="254" r="14" fill="#C8553D" stroke="#3B2218" stroke-width="3"/>
+          <path d="M60 276h300v18c0 26-40 40-150 40S60 320 60 294z" fill="#C98A33" stroke="#3B2218" stroke-width="3"/>
+          <!-- Dampf -->
+          <g class="float b" fill="none" stroke="#3B2218" stroke-width="5" stroke-linecap="round" opacity=".5">
+            <path d="M160 40c-12-14 12-22 0-38"/><path d="M215 36c-12-14 12-22 0-38"/><path d="M270 40c-12-14 12-22 0-38"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30c150 30 300 30 450 10s300-30 450-10 200 20 300 5v25H0z" fill="#3B2218"/></svg>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div>Bagels<span>●</span>Kaffee<span>●</span>Frühstück<span>●</span>Kuchen<span>●</span>Straubing<span>●</span>Bagels<span>●</span>Kaffee<span>●</span>Frühstück<span>●</span>Kuchen<span>●</span>Straubing<span>●</span></div>
+  </div>
+
+  <section id="why" aria-labelledby="why-h">
+    <div class="wrap">
+      <h2 id="why-h" class="rv">Klein, gemütlich, selbstgemacht</h2>
+      <div class="features">
+        <div class="feat rv">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" fill="#E0A44B"/><circle cx="24" cy="24" r="7" fill="#FFF6EA"/><circle cx="14" cy="16" r="2" fill="#FFF6EA"/><circle cx="34" cy="14" r="2" fill="#FFF6EA"/><circle cx="38" cy="30" r="2" fill="#FFF6EA"/><circle cx="12" cy="32" r="2" fill="#FFF6EA"/></svg>
+          <h3>Eigener Teig</h3><p>Unsere Bagels entstehen aus eigenem Teig – kein Fertigprodukt.</p>
+        </div>
+        <div class="feat rv">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18h32v6c0 10-7 18-16 18S8 34 8 24z" fill="#3B2218"/><path d="M40 22h2a5 5 0 0 1 0 10h-4" fill="none" stroke="#3B2218" stroke-width="3"/><path d="M18 12c-3-3 3-5 0-9M26 12c-3-3 3-5 0-9" stroke="#E0A44B" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+          <h3>Kaffee &amp; mehr</h3><p>Von Espresso bis Latte Macchiato – dazu Kuchen und Kaltgetränke.</p>
+        </div>
+        <div class="feat rv">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4c-8 0-14 6-14 14 0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" fill="#A8432C"/><circle cx="24" cy="18" r="6" fill="#FFF6EA"/></svg>
+          <h3>Mitten in der Stadt</h3><p>Jakobsgasse 3 – ein paar Schritte von der Straubinger Innenstadt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="menu" aria-labelledby="menu-h">
+    <div class="wrap">
+      <h2 id="menu-h" class="rv">Speisekarte</h2>
+      <p class="sub rv">Eine Auswahl unseres Angebots. Aktuelle Preise und Tagesangebote findest du im Café.</p>
+      <div class="tabs" id="tabs" role="group" aria-label="Kategorie filtern"></div>
+      <div class="menu" id="menuGrid"></div>
+      <p class="note">Hinweis zu Allergenen und Zusatzstoffen: Bitte frag bei uns im Café nach – wir beraten dich gern.</p>
+    </div>
+  </section>
+
+  <section id="gallery" aria-labelledby="gal-h" hidden>
+    <div class="wrap">
+      <h2 id="gal-h">Einblicke</h2>
+      <div class="gallery" id="galleryGrid"></div>
+    </div>
+  </section>
+
+  <section id="about" aria-labelledby="about-h">
+    <div class="wrap about">
+      <div class="rv">
+        <h2 id="about-h">Über uns</h2>
+        <p>Fräulein Bagel ist ein kleines, liebevoll eingerichtetes Café in der Jakobsgasse. Die Bagels entstehen aus eigenem Teig und werden frisch belegt – herzhaft oder süß.</p>
+        <p>Komm vorbei auf einen Kaffee, ein Frühstück oder eine Pause zwischendurch.</p>
+        <p class="quote">Ein Bagel geht immer.</p>
+      </div>
+      <svg class="rv" viewBox="0 0 300 220" role="img" aria-label="Illustration einer Kaffeetasse mit Dampf">
+        <ellipse cx="150" cy="190" rx="110" ry="14" fill="#E8B4A6"/>
+        <path d="M70 80h140v50a60 60 0 0 1-60 60h-20a60 60 0 0 1-60-60z" fill="#3B2218"/>
+        <path d="M210 95h14a24 24 0 0 1 0 48h-22" fill="none" stroke="#3B2218" stroke-width="12" stroke-linecap="round"/>
+        <rect x="70" y="80" width="140" height="14" fill="#A8432C"/>
+        <g class="float" fill="none" stroke="#E0A44B" stroke-width="6" stroke-linecap="round">
+          <path d="M110 60c-10-12 10-18 0-32"/><path d="M145 60c-10-12 10-18 0-32"/><path d="M180 60c-10-12 10-18 0-32"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="alt" id="besuch" aria-labelledby="visit-h">
+    <div class="wrap">
+      <h2 id="visit-h" class="rv">Besuch</h2>
+      <div class="visit">
+        <div class="card rv">
+          <div class="pin">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4c-8 0-14 6-14 14 0 10 14 26 14 26s14-16 14-26c0-8-6-14-14-14z" fill="#A8432C"/><circle cx="24" cy="18" r="6" fill="#FFF6EA"/></svg>
+            <h3 style="margin:0">Adresse</h3>
+          </div>
+          <address>Fräulein Bagel<br>Jakobsgasse 3<br>94315 Straubing</address>
+          <p class="btns" style="margin-top:16px">
+            <a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=Jakobsgasse+3,+94315+Straubing" target="_blank" rel="noopener noreferrer">Route planen</a>
+            <a class="btn ghost" href="https://www.openstreetmap.org/search?query=Jakobsgasse%203%2C%2094315%20Straubing" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
+          </p>
+          <p class="note">Externe Links – erst nach Klick werden Daten an den jeweiligen Anbieter übertragen.</p>
+          <p id="contactLine"></p>
+        </div>
+        <div class="card rv">
+          <h3>Öffnungszeiten</h3>
+          <dl class="hours" id="hours"></dl>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="big">Fräulein Bagel</p>
+    <p>Jakobsgasse 3 · 94315 Straubing</p>
+    <ul>
+      <li><button class="linklike" data-open="dlg-impressum">Impressum</button></li>
+      <li><button class="linklike" data-open="dlg-privacy">Datenschutz</button></li>
+      <li><button class="linklike" data-open="dlg-terms">Nutzungsbedingungen</button></li>
+      <li><button class="linklike" data-open="dlg-cookies">Cookies</button></li>
+    </ul>
+    <p>© <span id="year"></span> Fräulein Bagel</p>
+  </div>
+</footer>
+
+<div class="bar" aria-label="Schnellzugriff">
+  <a href="#menu">Speisekarte</a>
+  <a href="https://www.google.com/maps/dir/?api=1&destination=Jakobsgasse+3,+94315+Straubing" target="_blank" rel="noopener noreferrer">Route</a>
+</div>
+
+<div id="cookie" role="region" aria-label="Hinweis zu Cookies">
+  <p>Diese Seite setzt <strong>keine Tracking- oder Marketing-Cookies</strong> und bindet keine Drittanbieter ein. Wir speichern nur, dass du diesen Hinweis gesehen hast. <button class="linklike" data-open="dlg-cookies">Mehr erfahren</button></p>
+  <button class="btn" id="cookieOk">Verstanden</button>
+</div>
+
+<dialog id="dlg-impressum" aria-labelledby="t-imp"><div class="dlg">
+  <button class="btn ghost close" data-close>Schließen</button>
+  <h2 id="t-imp">Impressum</h2>
+  <p><strong>Angaben gemäß § 5 DDG</strong></p>
+  <p>Fräulein Bagel<br>Jakobsgasse 3<br>94315 Straubing</p>
+  <p><strong>Inhaber/in:</strong> [Vor- und Nachname eintragen]<br>
+  <strong>Telefon:</strong> [eintragen]<br>
+  <strong>E-Mail:</strong> [eintragen]<br>
+  <strong>USt-IdNr. (falls vorhanden):</strong> [eintragen]</p>
+  <p>Zuständige Aufsichtsbehörde / Lebensmittelüberwachung: [falls zutreffend eintragen]</p>
+  <p><em>Bitte die Angaben in eckigen Klammern vor Veröffentlichung durch die echten Daten des Betreibers ersetzen.</em></p>
+</div></dialog>
+
+<dialog id="dlg-privacy" aria-labelledby="t-priv"><div class="dlg">
+  <button class="btn ghost close" data-close>Schließen</button>
+  <h2 id="t-priv">Datenschutzerklärung</h2>
+  <h3>1. Verantwortlicher</h3>
+  <p>Fräulein Bagel, Jakobsgasse 3, 94315 Straubing – Kontaktdaten siehe Impressum.</p>
+  <h3>2. Welche Daten wir verarbeiten</h3>
+  <p>Beim Aufruf dieser Seite verarbeitet der Hosting-Anbieter technisch notwendige Server-Logdaten (z. B. IP-Adresse, Datum/Uhrzeit, aufgerufene Datei), um die Seite auszuliefern und sicher zu betreiben (Art. 6 Abs. 1 lit. f DSGVO). Hosting-Anbieter: [Anbieter eintragen].</p>
+  <p>Diese Website hat <strong>kein Kontaktformular, keine Registrierung, kein Tracking und keine Analyse-Tools</strong>. Wenn du uns per E-Mail oder Telefon kontaktierst, verwenden wir deine Angaben nur zur Beantwortung deiner Anfrage.</p>
+  <h3>3. Drittanbieter / SDKs</h3>
+  <p>Es werden keine Drittanbieter-Skripte, Schriftarten-Dienste, eingebetteten Karten oder SDKs geladen. Die Links zu Google Maps und OpenStreetMap sind normale externe Links; erst nach deinem Klick gelten dort die Datenschutzbestimmungen des jeweiligen Anbieters.</p>
+  <h3>4. Kinder und Jugendliche</h3>
+  <p>Wir erheben über diese Website keine personenbezogenen Daten von Kindern. Unter 16-Jährige sollten uns nur mit Einwilligung der Eltern Daten übermitteln. Ein Newsletter-Versand findet nicht statt.</p>
+  <h3>5. Deine Rechte</h3>
+  <p>Du hast das Recht auf Auskunft, Berichtigung, <strong>Löschung</strong>, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Eine Löschanfrage genügt per E-Mail an die im Impressum genannte Adresse. Außerdem kannst du dich bei der zuständigen Aufsichtsbehörde beschweren (in Bayern: Bayerisches Landesamt für Datenschutzaufsicht, Ansbach).</p>
+</div></dialog>
+
+<dialog id="dlg-terms" aria-labelledby="t-terms"><div class="dlg">
+  <button class="btn ghost close" data-close>Schließen</button>
+  <h2 id="t-terms">Nutzungsbedingungen</h2>
+  <p>Diese Website dient der Information über das Café Fräulein Bagel (Speisekarte, Adresse, Öffnungszeiten). Alle Angaben sind ohne Gewähr; maßgeblich sind die aktuellen Angaben im Café.</p>
+  <p>Inhalte und Grafiken dieser Seite dürfen ohne Zustimmung nicht kopiert oder weiterverwendet werden.</p>
+  <h3>Bestellungen und Rückerstattung</h3>
+  <p>Über diese Website werden keine Bestellungen oder Zahlungen abgewickelt. Käufe erfolgen ausschließlich vor Ort im Café; eine Online-Rückerstattung entfällt daher.</p>
+</div></dialog>
+
+<dialog id="dlg-cookies" aria-labelledby="t-cook"><div class="dlg">
+  <button class="btn ghost close" data-close>Schließen</button>
+  <h2 id="t-cook">Cookies und lokaler Speicher</h2>
+  <p>Diese Seite verwendet keine Cookies für Tracking, Statistik oder Werbung. Im lokalen Speicher deines Browsers wird lediglich ein Eintrag („Hinweis gesehen“) abgelegt, damit der Hinweis nicht bei jedem Besuch erneut erscheint. Dieser Eintrag ist technisch notwendig und enthält keine persönlichen Daten.</p>
+  <p><button class="btn primary" id="cookieReset">Hinweis erneut anzeigen</button></p>
+</div></dialog>
+
+<script>
+/* ================= HIER ANPASSEN ================= */
+const CONFIG = {
+  // Preise leer = werden nicht angezeigt. Beispiel: price: "5,90 €"
+  menu: [
+    { title: "Bagels herzhaft", icon: "bagel", items: [
+      { name: "Lachs & Frischkäse", desc: "Räucherlachs, Frischkäse, Gurke, Dill", price: "" },
+      { name: "Hähnchen & Avocado", desc: "Hähnchenbrust, Avocado, Salat, Tomate", price: "" },
+      { name: "Mozzarella & Pesto", desc: "Mozzarella, Tomate, Basilikum-Pesto", price: "" },
+      { name: "Hummus & Gemüse", desc: "Hummus, Gemüse, Rucola", price: "" }
+    ]},
+    { title: "Bagels süß", icon: "bagel", items: [
+      { name: "Frischkäse & Beeren", desc: "Frischkäse, Beerenmix", price: "" },
+      { name: "Nuss-Nougat & Banane", desc: "Nuss-Nougat-Creme, Banane", price: "" }
+    ]},
+    { title: "Kaffee & Co.", icon: "cup", items: [
+      { name: "Espresso", desc: "", price: "" },
+      { name: "Cappuccino", desc: "", price: "" },
+      { name: "Latte Macchiato", desc: "", price: "" },
+      { name: "Chai Latte", desc: "", price: "" }
+    ]},
+    { title: "Kalt & Süß", icon: "glass", items: [
+      { name: "Hausgemachte Limonade", desc: "", price: "" },
+      { name: "Saftschorle", desc: "", price: "" },
+      { name: "Kuchen des Tages", desc: "", price: "" }
+    ]}
+  ],
+  // Öffnungszeiten: von/bis im Format "HH:MM"; closed:true = Ruhetag. Leer lassen, solange unbekannt.
+  hours: [
+    { label: "Montag",     days:[1], from:"", to:"" },
+    { label: "Dienstag",   days:[2], from:"", to:"" },
+    { label: "Mittwoch",   days:[3], from:"", to:"" },
+    { label: "Donnerstag", days:[4], from:"", to:"" },
+    { label: "Freitag",    days:[5], from:"", to:"" },
+    { label: "Samstag",    days:[6], from:"", to:"" },
+    { label: "Sonntag",    days:[0], from:"", to:"" }
+  ],
+  phone: "",   // z. B. "+49 9421 000000"
+  email: "",   // z. B. "hallo@beispiel.de"
+  // Eigene Fotos (Dateien neben index.html legen): { src: "foto1.jpg", alt: "Beschreibung" }
+  // Nur Fotos verwenden, für die du die Rechte hast!
+  photos: [],
+  // Hauptfoto im Hero, z. B. { src: "hero.jpg", alt: "Belegter Bagel im Fräulein Bagel" }. Leer = Illustration.
+  heroPhoto: null
+  // Foto pro Gericht: in menu.items ergänzen, z. B. { name: "...", desc: "...", price: "", photo: "lachs.jpg" }
+};
+/* ================================================= */
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ICONS = {
+  bagel:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#E0A44B"/><circle cx="20" cy="20" r="6" fill="#FFF6EA"/></svg>',
+  cup:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 14h24v6c0 8-5 14-12 14S6 28 6 20z" fill="#3B2218"/><path d="M30 17h2a4 4 0 0 1 0 8h-3" fill="none" stroke="#3B2218" stroke-width="3"/></svg>',
+  glass:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M9 6h22l-3 28H12z" fill="#E8B4A6"/><path d="M10 14h20" stroke="#A8432C" stroke-width="3"/></svg>'
+};
+
+// Menü + Filter
+let active = "Alle";
+function renderMenu(){
+  const cats = CONFIG.menu.filter(c => active === "Alle" || c.title === active);
+  document.getElementById('menuGrid').innerHTML = cats.map(cat => `
+    <article class="card rv in">
+      <h3>${ICONS[cat.icon]||''}${esc(cat.title)}</h3>
+      ${cat.items.map(i => `
+        <div class="item">
+          <div class="l">${i.photo ? `<img class="thumb" src="${esc(i.photo)}" alt="${esc(i.name)}" loading="lazy">` : ''}<div><b>${esc(i.name)}</b>${i.desc ? `<small>${esc(i.desc)}</small>` : ''}</div></div>
+          ${i.price ? `<span class="price">${esc(i.price)}</span>` : ''}
+        </div>`).join('')}
+    </article>`).join('');
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t.dataset.cat === active));
+}
+document.getElementById('tabs').innerHTML = ["Alle", ...CONFIG.menu.map(c => c.title)]
+  .map(t => `<button class="tab" data-cat="${esc(t)}" aria-pressed="${t==='Alle'}">${esc(t)}</button>`).join('');
+document.getElementById('tabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab'); if (!b) return; active = b.dataset.cat; renderMenu();
+});
+renderMenu();
+
+// Öffnungszeiten + "Jetzt geöffnet"
+const hasHours = CONFIG.hours.some(h => h.from && h.to);
+document.getElementById('hours').innerHTML = CONFIG.hours.map(h =>
+  `<dt>${esc(h.label)}</dt><dd>${h.from && h.to ? esc(h.from)+' – '+esc(h.to)+' Uhr' : (hasHours ? 'Ruhetag' : '[bitte eintragen]')}</dd>`).join('');
+if (hasHours) {
+  const now = new Date(), d = now.getDay(), m = now.getHours()*60 + now.getMinutes();
+  const h = CONFIG.hours.find(x => x.days.includes(d));
+  const toMin = s => { const [a,b] = s.split(':').map(Number); return a*60+b; };
+  const open = h && h.from && h.to && m >= toMin(h.from) && m < toMin(h.to);
+  const b = document.getElementById('openBadge');
+  b.textContent = open ? 'Jetzt geöffnet' : 'Gerade geschlossen';
+  b.className = 'badge on' + (open ? '' : ' closed');
+}
+
+// Kontakt
+const contact = [];
+if (CONFIG.phone) contact.push(`Tel.: <a href="tel:${esc(CONFIG.phone.replace(/\s/g,''))}">${esc(CONFIG.phone)}</a>`);
+if (CONFIG.email) contact.push(`E-Mail: <a href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a>`);
+document.getElementById('contactLine').innerHTML = contact.join('<br>');
+
+// Hero-Foto
+if (CONFIG.heroPhoto) {
+  document.getElementById('heroScene').innerHTML =
+    `<div class="photo-frame"><img src="${esc(CONFIG.heroPhoto.src)}" alt="${esc(CONFIG.heroPhoto.alt)}"></div>`;
+}
+
+// Galerie
+if (CONFIG.photos.length) {
+  document.getElementById('gallery').hidden = false;
+  document.getElementById('galleryGrid').innerHTML = CONFIG.photos
+    .map(p => `<img src="${esc(p.src)}" alt="${esc(p.alt)}" loading="lazy">`).join('');
+}
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Dialoge
+document.addEventListener('click', e => {
+  const o = e.target.closest('[data-open]');
+  if (o) { document.querySelectorAll('dialog[open]').forEach(x => x.close()); document.getElementById(o.dataset.open).showModal(); return; }
+  if (e.target.closest('[data-close]')) e.target.closest('dialog').close();
+  if (e.target.tagName === 'DIALOG') e.target.close();
+});
+
+// Hinweis (nur technisch notwendiger Speicher)
+const KEY='fb_hint_seen', box=document.getElementById('cookie');
+const safe = fn => { try { return fn(); } catch(_) { return null; } };
+if (!safe(() => localStorage.getItem(KEY))) box.style.display='block';
+document.getElementById('cookieOk').addEventListener('click', () => { safe(() => localStorage.setItem(KEY,'1')); box.style.display='none'; });
+document.getElementById('cookieReset').addEventListener('click', () => { safe(() => localStorage.removeItem(KEY)); document.getElementById('dlg-cookies').close(); box.style.display='block'; });
+
+// Einblenden beim Scrollen
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12});
+  document.querySelectorAll('.rv:not(.in)').forEach(el => io.observe(el));
+} else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
+</script>
+</body>
+</html>
